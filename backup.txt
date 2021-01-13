@@ -1,0 +1,18 @@
+//register user 
+
+
+try{
+    //     if(Object.keys(req.body).length <=0)
+    //     {
+    //     throw new Error('To create an User Must required body')
+    //     }
+    //     const user = await new User(req.body)
+        
+    //     await user.save()
+    //     const token = user.generateAuthToken()
+    //     res.send(user)
+ 
+
+    // }catch(e){
+    //     res.status(500).send(''+e)
+    // }
