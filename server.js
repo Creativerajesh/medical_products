@@ -1,11 +1,13 @@
 require('./config/db.config')
 const userRoute = require('./routes/userRoute')
+const productTypeRoute = require('./routes/productTypeRoute')
+const ProductsRoute = require('./routes/productRoute')
 const express = require('express')
 const app =express()
 app.use(express.json())
 app.use(userRoute)
-
-
+app.use(productTypeRoute)
+app.use(ProductsRoute)
 app.listen(3000,()=>{
     console.log('connected')
 })

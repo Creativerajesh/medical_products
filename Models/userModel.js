@@ -25,14 +25,11 @@ const userSchema  = new mongoose.Schema({
             }
         }
     },
-    age: {
-        type: Number,
+    DOB: {
+        type: String,
         default: 0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error('Age must be a postive number')
-            }
-        }
+        required:true
+
     },
  
     gender:
