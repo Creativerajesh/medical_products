@@ -20,11 +20,10 @@ const lcSchema = new mongoose.Schema({
     
         
 
-     
-    dislike:[{
-        count:{
-            type:Number
-        },  
+    dislikeCount:{
+        type:Number
+    },
+    dislikeBy:[{ 
          user_id:{
             type:mongoose.Schema.Types.ObjectId,
             ref:'users',
