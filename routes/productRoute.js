@@ -4,13 +4,13 @@ const router = express.Router()
 
 const ProductController = require('../controller/productController')
 
-router.get('/products/:id',auth,(req,res)=>{
+router.post('/products/:id',auth,(req,res)=>{
     ProductController.createProduct(req,(error,resp)=>{
       if(error)
       {
-          res.status(500).send(''+error)
+          return res.status(404).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
     })
 })
 router.get('/products',(req,res)=>{
@@ -18,19 +18,19 @@ router.get('/products',(req,res)=>{
       
     if(error)
       {
-          res.status(500).send(''+error)
+        return res.status(404).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
   })
 })
-router.put('/products/:id',auth,async (req,res)=>{
+router.patch('/products/:id',auth,async (req,res)=>{
   await ProductController.editProduct(req,(error,resp)=>{
       
     if(error)
       {
-          res.status(500).send(''+error)
+        return res.status(500).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
   })
 })
 router.delete('/products/:id',auth,async (req,res)=>{
@@ -38,9 +38,9 @@ router.delete('/products/:id',auth,async (req,res)=>{
       
     if(error)
       {
-          res.status(500).send(''+error)
+        return res.status(404).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
   })
 })
 router.get('/products/type/:type',async (req,res)=>{
@@ -48,9 +48,9 @@ router.get('/products/type/:type',async (req,res)=>{
       
     if(error)
       {
-          res.status(500).send(''+error)
+        return res.status(404).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
   })
 })
 router.get('/productsRecent',async (req,res)=>{
@@ -58,9 +58,9 @@ router.get('/productsRecent',async (req,res)=>{
       
     if(error)
       {
-          res.status(500).send(''+error)
+        return res.status(404).send(''+error)
       }
-      res.status(200).send(resp)
+      return res.status(200).send(resp)
   })
 })
 

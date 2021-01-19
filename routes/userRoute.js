@@ -12,7 +12,7 @@ router.post('/user',async (req,res)=>{
         {
             return res.status(500).send(''+error)
         }
-        res.status(201).send(resp) 
+        return res.status(201).send(resp) 
     })   
 })
 
@@ -28,9 +28,9 @@ router.post('/user/login',async (req,res)=>{
 
  router.get('/user/me',auth,async (req,res)=>{
         try{
-            res.status(200).send(req.user)
+            return res.status(200).send(req.user)
         }catch(e){
-            res.status(500).send(''+e)
+            return res.status(500).send(''+e)
         }
  })
 module.exports =router

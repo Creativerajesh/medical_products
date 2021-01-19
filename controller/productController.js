@@ -5,9 +5,9 @@ const mongoose = require('mongoose')
 const createProduct = async (req,cb)=>{
     const ptype_id = req.params.id
 
-    if(!ptype_id)
+    if(!ptype_id || ptype_id.length<12)
     {
-        cb('Product Type ID must needed',null)
+        return cb('Product ID is not valid',null)
     }
     const type = await pType.findById(ptype_id)
     const Ptype =type.product_type
@@ -15,7 +15,7 @@ const createProduct = async (req,cb)=>{
         
         if(Object.keys(req.body).length <=0)
         {
-       cb('To create a Product body is required',null)
+            return cb('To create a Product body is required',null)
         }
         const data = req.body;
         data.user_id=req.user._id
@@ -41,7 +41,7 @@ const getAllProducts = async(cb)=>{
         let Products =await Product_Model.find();
         if(Products.length<=0)
         {
-           throw new Error('Products Not available')
+           cb('Products Not available',null)
         }
         for(let i=0;i<Products.length;i++)
         {
@@ -53,7 +53,7 @@ const getAllProducts = async(cb)=>{
         cb(null,Products)
           
     }catch(e){
-        cb(e,null)
+        cb('Server Error',null)
     }
     
 }
@@ -63,34 +63,41 @@ const editProduct = async(req,cb)=>{
     try{
     if(Object.keys(req.body).length <=0)
     {
-        throw new Error('You have passed Nothing to Update')
+     return cb('You have passed Nothing to Update',null)
     }
     const pid = req.params.id;
     const product = await Product_Model.findById(pid)
-   
+    if(!product)
+    {
+        return cb('No product Available',null)
+    }
     const isOwner=req.user._id.equals(product.user_id)
     if(!isOwner)
     {
         
-        throw new Error('You can not Edit Because You Did Not Create it')
+        return cb('You can not Edit Because You Did Not Create it',null)
     }
   
-    const uProduct =await Product_Model.findByIdAndUpdate(pid,req.body)
-         cb(null,uProduct)
+    const uProduct =await Product_Model.findByIdAndUpdate(pid,req.body,{new:true})
+    return cb(null,uProduct)
    
 }catch(e){
-    cb(e,null)
+    return cb('Server Error',null)
 }
 }
 const deleteProduct = async (req,cb)=>{
     try{
      const pid = req.params.id;
      const product = await Product_Model.findById(pid)
+     if(!product)
+     {
+         cb('Product Not Found',null)
+     }
      const isOwner=req.user._id.equals(product.user_id)
      if(!isOwner)
      {
          
-         throw new Error('You can not delete this Product Because You Did Not Create it')
+         cb('You can not delete this Product Because You Did Not Create it',null)
      }
    
      const dProduct =await Product_Model.findByIdAndDelete(pid)
@@ -107,19 +114,26 @@ const getProductByType = async(req,cb)=>{
     const type = req.params.type.toUpperCase()
     if(!type)
     {
-        throw new Error('Type cannot be empty')
+        return cb('Type cannot be empty',null)
     }
     const products = await Product_Model.find({productType:type})
+    if(products.length<=0)
+    {
+       return  cb('No Product Found',null)
+    }
     cb(null,products)
   }catch(e){
-      cb(e,null)
+      cb('Server Error',null)
   }
 }
 
 const getMostRecent = async (req,cb)=>{
     try{
             const product =await  Product_Model.find(null,null,{limit:1,sort:{createdAt:-1}})
-          
+            if(product.length<=0)
+            {
+                return cb('no product Found',null)
+            }
             cb(null,product)
     }catch(e){
         cb(e,null)

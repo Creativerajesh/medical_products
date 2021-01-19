@@ -12,7 +12,7 @@ router.post('/producttype',auth,async (req,res)=>{
         {
             return res.status(500).send(''+error)
         }
-        res.status(201).send(resp) 
+        return res.status(201).send(resp) 
     })   
  
 })
@@ -21,9 +21,9 @@ router.get('/producttype',auth,(req,res)=>{
     pTypeController.getPtype((error,resp)=>{
         if(error)
         {
-            res.status(404).send(''+error)
+            return res.status(404).send(''+error)
         }
-        res.status(200).send(resp)
+        return res.status(200).send(resp)
     })
 })
 

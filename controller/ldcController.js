@@ -11,7 +11,7 @@ const like = async(req,cb)=>{
     const product = await productModel.findById(pid)
     if(!product)
     {
-        cb('Product Not found',null)
+        return cb('Product Not found',null)
     }
     const prod = await LDC.find({product_id:mongoose.Types.ObjectId(pid)})
    
@@ -28,7 +28,7 @@ const like = async(req,cb)=>{
           
         const newData = await new LDC(data)
         newData.save()
-        cb(null,'You have SuccessFully Liked this Post')
+        return cb(null,'You have SuccessFully Liked this Post')
         
         }else
         {  
@@ -46,14 +46,14 @@ const like = async(req,cb)=>{
                     prod[0].dislikeCount -=1;
                     await prod[0].save();     
                 }
-                cb(null,'You have Successfully Liked This Post')
+                return cb(null,'You have Successfully Liked This Post')
             }
             else{
             let index=prod[0].likeBy.findIndex((el)=>el.user_id.equals(req.user._id));
             prod[0].likeBy.splice(index,1)
             prod[0].likeCount -=1;
             await prod[0].save();     
-            cb(null,'Your Like has Removed  Successfully')
+            return cb(null,'Your Like has Removed  Successfully')
            }     
         }
     }catch(e){
@@ -70,7 +70,7 @@ try{
     const product = await productModel.findById(pid)
     if(!product)
     {
-        cb('Product Not found',null)        
+        return cb('Product Not found',null)        
     }
     //check product available in Like Model
     const prod = await LDC.find({product_id:mongoose.Types.ObjectId(pid)})
@@ -105,7 +105,7 @@ try{
                 prod[0].likeCount -=1;
                 await prod[0].save();        
                 }       
-                cb(null,'You have Successfully DisLiked This Post')
+                return cb(null,'You have Successfully DisLiked This Post')
             }
             else
             {
@@ -114,7 +114,7 @@ try{
                     prod[0].dislikeBy.splice(index,1)
                     prod[0].dislikeCount -=1;
                     await prod[0].save();    
-                    cb(null,'Your Dislike Has Been Removed ')
+                    return cb(null,'Your Dislike Has Been Removed ')
             }
 
 
@@ -122,7 +122,7 @@ try{
 }   
 catch(e){
     console.log(e)
-    cb(e,null)
+    return cb(e+'server Error',null)
 }
 
 }
@@ -133,12 +133,12 @@ try{
     const ucomment = req.body.comment
     if(!ucomment)
     {
-        cb('Comment Must be passed',null)
+        return cb('Comment Must be passed',null)
     }
     const product = await productModel.findById(pid)
     if(!product)
     {
-        cb('Product Not found',null)       
+        return cb('Product Not found',null)       
     }
      //check product available in Like Model
      const prod = await LDC.find({product_id:mongoose.Types.ObjectId(pid)})
@@ -154,20 +154,20 @@ try{
            
          const newData = await new LDC(data)
          newData.save()
-         cb(null,'Your Comment has benn added ')
+         return cb(null,'Your Comment has benn added ')
     }else
     {
         //Add a New Comment
         prod[0].comments.push({comment:ucomment,user_id:req.user._id})
         prod[0].save()
-        cb(null,'Your Comment has benn added ')
+        return cb(null,'Your Comment has benn added ')
     }
 
     
 }catch(e)
 {
-    console.log(e)
-    cb(e,null)
+  
+    return cb(e+'Server Error',null)
 }
 }
 const getMostlikeProduct = async (req,cb)=>{
@@ -191,7 +191,7 @@ const getMostlikeProduct = async (req,cb)=>{
           
     }catch(e){
         console.log(e)
-        cb(e,null)
+        cb(e+'Server Error',null)
     }
     
 }

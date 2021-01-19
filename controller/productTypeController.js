@@ -33,7 +33,7 @@ const getPtype = async (cb)=>{
         cb(null,data)
 
     }catch(e)  {
-        cb(e,null) 
+        cb(e+'Server error',null) 
     }
 }
 
